@@ -7,24 +7,19 @@
   margin-right: 50px;
 }
 
-.todolist {
-  border: 1px solid darkslategrey;
-  border-radius: 5px;
-  padding: 20px;
+.error {
+  border: red 1px solid;
+}
+
+.error-message {
+  color: red;
 }
 
 .active-filter {
-  background-color: cornflowerblue;
+  background-color: aquamarine;
 }
 
-.completed-task {
+.is-done {
   opacity: 0.5;
 }
 
-.error {
-  border: 2px solid red;
-}
-
-.error:active {
-  border: none;
-}
