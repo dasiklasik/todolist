@@ -80,7 +80,6 @@ function App() {
         let newID = v1();
         setTodolists([...todolists, {id: newID, title, filter: 'all'}])
         setTasks({...tasks, [newID]: []})
-        console.log(todolists)
     }
 
     return (
