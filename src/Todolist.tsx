@@ -18,6 +18,8 @@ type PropsType = {
     filter: FilterValuesType
     todolistsID:string
     removeTodolist:(todolistsID: string)=>void
+    changeTaskTitle: (todolistID: string, value: string, taskId: string) => void
+    changeTodolistTitle: (todolistId: string, title: string) => void
 }
 
 export function Todolist(props: PropsType) {
@@ -30,8 +32,12 @@ export function Todolist(props: PropsType) {
     const onActiveClickHandler = () => props.changeFilter("active",props.todolistsID);
     const onCompletedClickHandler = () => props.changeFilter("completed", props.todolistsID);
 
+    const changeTodolistTitle = (title: string) => {
+        props.changeTodolistTitle(props.todolistsID, title)
+    }
+
     return <div>
-        <h3 >{props.title}
+        <h3><EditableSpan title={props.title} onChange={changeTodolistTitle}/>
         <button onClick={()=>props.removeTodolist(props.todolistsID)}>X</button>
         </h3>
 
@@ -40,15 +46,19 @@ export function Todolist(props: PropsType) {
             {
                 props.tasks.map(t => {
                     const onClickHandler = () => props.removeTask(props.todolistsID,t.id)
-                    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+                    const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
                         props.changeTaskStatus(props.todolistsID,t.id, e.currentTarget.checked);
+                    }
+
+                    const onChangeTitleHandler = (value: string) => {
+                        props.changeTaskTitle(props.todolistsID, value, t.id);
                     }
 
                     return <li key={t.id} className={t.isDone ? "is-done" : ""}>
                         <input type="checkbox"
-                               onChange={onChangeHandler}
+                               onChange={onChangeStatusHandler}
                                checked={t.isDone}/>
-                        <EditableSpan title={t.title}/>
+                        <EditableSpan title={t.title} onChange={onChangeTitleHandler}/>
                         <button onClick={onClickHandler}>x</button>
                     </li>
                 })
