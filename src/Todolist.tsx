@@ -4,7 +4,8 @@ import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
 import Button from '@material-ui/core/Button';
 import {Delete, DeleteForeverTwoTone} from "@material-ui/icons";
-import { IconButton } from '@material-ui/core';
+import {Checkbox, IconButton} from '@material-ui/core';
+import './App.css'
 
 
 type TaskType = {
@@ -42,7 +43,7 @@ export function Todolist(props: PropsType) {
 
     const removeTodolist = ()=>props.removeTodolist(props.todolistsID)
 
-    return <div>
+    return <div className={'todolist'}>
         <h3><EditableSpan title={props.title} onChange={changeTodolistTitle}/>
             <IconButton aria-label="delete" size={'small'} onClick={removeTodolist}>
                 <Delete />
@@ -64,7 +65,7 @@ export function Todolist(props: PropsType) {
                     }
 
                     return <li key={t.id} className={t.isDone ? "is-done" : ""}>
-                        <input type="checkbox"
+                        <Checkbox
                                onChange={onChangeStatusHandler}
                                checked={t.isDone}/>
                         <EditableSpan title={t.title} onChange={onChangeTitleHandler}/>

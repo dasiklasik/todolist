@@ -1,6 +1,14 @@
-.App {
-  padding: 30px;
+/*.App {*/
+/*  padding: 30px;*/
+/*}*/
+
+.todolists {
   display: flex;
+  margin-top: 50px;
+}
+
+.todolist {
+  margin-right: 40px;
 }
 
 .App > div {
@@ -21,5 +29,6 @@
 
 .is-done {
   opacity: 0.5;
+  text-decoration: line-through;
 }
 
