@@ -5,18 +5,15 @@ import {v1} from 'uuid';
 import {AddItemForm} from "./AddItemForm";
 import {Container, Grid, Paper, Toolbar} from '@material-ui/core';
 import {IconButton} from "@material-ui/core";
-import {Menu} from "@material-ui/core";
 import {AppBar} from "@material-ui/core";
 import MenuIcon from '@mui/icons-material/Menu';
-// import {MenuIcon}  from "@material-ui/core"
-// import IconButton from '@mui/material/IconButton';
-// import MenuIcon from '@mui/icons-material/Menu';
+
 
 
 export type FilterValuesType = "all" | "active" | "completed";
-type todolistsType = { id: string, title: string, filter: FilterValuesType }
+export type todolistsType = { id: string, title: string, filter: FilterValuesType }
 
-type TasksType = { [key: string]: Array<{ id: string, title: string, isDone: boolean }> }
+export type TasksType = { [key: string]: Array<{ id: string, title: string, isDone: boolean }> }
 
 function App() {
 
