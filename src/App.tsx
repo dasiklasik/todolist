@@ -9,7 +9,6 @@ import {AppBar} from "@material-ui/core";
 import MenuIcon from '@mui/icons-material/Menu';
 
 
-
 export type FilterValuesType = "all" | "active" | "completed";
 export type todolistsType = { id: string, title: string, filter: FilterValuesType }
 
@@ -48,7 +47,6 @@ function App() {
         if (currentTodolist) {
             setTodolists(currentTodolist)
         }
-        console.log(todolistsID)
     }
 
     function removeTask(todolistsID: string, id: string) {
@@ -57,37 +55,30 @@ function App() {
     }
 
     function addTask(todolistsID: string, title: string) {
-
-        let task = {id: v1(), title: title, isDone: false};
-
-        setTasks({...tasks, [todolistsID]: [...tasks[todolistsID], task]})
+        setTasks({
+            ...tasks, [todolistsID]: [...tasks[todolistsID],
+                {id: v1(), title: title, isDone: false}]
+        })
     }
 
     function changeStatus(todolistsID: string, taskId: string, isDone: boolean) {
-
-
         setTasks({...tasks, [todolistsID]: tasks[todolistsID].map(t => t.id === taskId ? {...t, isDone} : t)})
     }
 
 
     function changeFilter(value: FilterValuesType, todolistsID: string) {
-        let currentTodolist = todolists.find(f => f.id === todolistsID);
-        if (currentTodolist) {
-            currentTodolist.filter = value;
-            setTodolists([...todolists])
-        }
-
+        setTodolists(todolists.map(tl => tl.id === todolistsID ? {...tl, filter: value} : tl))
     }
 
     const addTodolist = (title: string) => {
-
         let newID = v1();
         setTodolists([...todolists, {id: newID, title, filter: 'all'}])
         setTasks({...tasks, [newID]: []})
     }
 
     const changeTaskTitle = (todolistID: string, value: string, taskId: string) => {
-        setTasks({...tasks, [todolistID]: tasks[todolistID].map(t => t.id === taskId ? {...t, title: value} : t)})
+        setTasks({...tasks, [todolistID]:
+                tasks[todolistID].map(t => t.id === taskId ? {...t, title: value} : t)})
     }
 
     const changeTodolistTitle = (todolistID: string, title: string) => {
@@ -99,17 +90,15 @@ function App() {
             <AppBar position={'static'}>
                 <Toolbar>
                     <IconButton edge={'start'} color={'inherit'} aria-label={'menu'}>
-                        {/*<Menu open={false} />*/}
                         <MenuIcon/>
                     </IconButton>
                 </Toolbar>
             </AppBar>
             <Container fixed>
-                <Grid container style={{ paddingTop: '20px'}}>
+                <Grid container style={{paddingTop: '20px'}}>
                     <AddItemForm addItem={addTodolist}/>
                 </Grid>
                 <div className={'todolists'}>
-
                     {todolists.map((m) => {
                         let tasksForTodolist = tasks[m.id];
                         if (m.filter === "active") {
