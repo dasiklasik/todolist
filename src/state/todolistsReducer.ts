@@ -24,8 +24,7 @@ export const todolistsReducer = (state: Array<todolistsType>, action: actionType
         case 'REMOVE-TODOLIST':
             return copyState.filter(t => t.id !== action.id)
         case 'ADD-TODOLIST':
-            let newId = v1()
-            return [...copyState, {id: newId, title: action.title, filter: 'all'}]
+            return [...copyState, {id: action.todolistId, title: action.title, filter: 'all'}]
         case 'CHANGE-TODOLIST-TITLE':
             return copyState.map(t => t.id === action.id ? {...t, title: action.title} : t)
         case 'CHANGE-TODOLIST-FILTER':
@@ -42,10 +41,11 @@ export const removeTodolistAC = (id: string) => {
     }
 }
 
-export const addTodolistAC = (title: string) => {
+export const addTodolistAC = (todolistId: string, title: string) => {
     return {
         type: 'ADD-TODOLIST' as const,
-        title
+        title,
+        todolistId
     }
 }
 
