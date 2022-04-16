@@ -1,5 +1,4 @@
 import {TasksType} from "../AppWithReducers";
-import {todolistID1, todolistID2} from "../AppWithRedux";
 import {v1} from "uuid";
 import {
     addTaskAC,
@@ -9,6 +8,7 @@ import {
     removeTaskAC,
     tasksReducer
 } from "./tasksReducer";
+import {todolistID1, todolistID2} from "./todolistsReducer";
 
 let initialState: TasksType;
 

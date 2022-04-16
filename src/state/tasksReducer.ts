@@ -1,8 +1,7 @@
 
 import {v1} from "uuid";
 import { TasksType } from "../AppWithReducers";
-import {todolistsReducer} from "./todolistsReducer";
-import {todolistID1, todolistID2} from "../AppWithRedux";
+import {todolistID1, todolistID2} from "./todolistsReducer";
 
 type removeTaskACType = ReturnType<typeof removeTaskAC>
 type addTaskACType = ReturnType<typeof addTaskAC>

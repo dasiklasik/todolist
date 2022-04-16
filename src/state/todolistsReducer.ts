@@ -1,6 +1,7 @@
-import {v1} from "uuid";
 import {FilterValuesType, todolistsType} from "../App";
-import {todolistID1, todolistID2} from "../AppWithRedux";
+import {v1} from "uuid";
+export let todolistID1 = v1();
+export let todolistID2 = v1();
 
 export type changeFilterACType = ReturnType<typeof changeFilterAC>
 
