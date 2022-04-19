@@ -3,10 +3,8 @@ import './App.css';
 import {Todolist} from './Todolist';
 import {v1} from 'uuid';
 import {AddItemForm} from "./AddItemForm";
-import {Container, Grid, Paper, Toolbar} from '@material-ui/core';
-import {IconButton} from "@material-ui/core";
-import {AppBar} from "@material-ui/core";
 import MenuIcon from '@mui/icons-material/Menu';
+import { AppBar, Container, Grid, IconButton, Paper, Toolbar } from '@mui/material';
 import {
     addTodolistAC,
     changeFilterAC,
