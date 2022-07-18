@@ -1,30 +1,50 @@
-import React, {useState} from 'react';
-import './App.css';
+import React, {useReducer, useState} from 'react';
+import '../App.css';
 import {Todolist} from './Todolist';
 import {v1} from 'uuid';
-import {AddItemForm} from "./AddItemForm";
-
+import {AddItemForm} from "../AddItemForm";
 import MenuIcon from '@mui/icons-material/Menu';
 import { AppBar, Container, Grid, IconButton, Paper, Toolbar } from '@mui/material';
+import {
+    addTodolistAC,
+    changeFilterAC,
+    changeTodolistTitleAC,
+    removeTodolistAC,
+    todolistsReducer
+} from "../state/todolistsReducer";
+import {
+    addTaskAC,
+    addTasksArrayAC,
+    changeTaskStatusAC,
+    changeTaskTitleAC,
+    removeTaskAC,
+    tasksReducer
+} from "../state/tasksReducer";
 
 
 export type FilterValuesType = "all" | "active" | "completed";
 export type todolistsType = { id: string, title: string, filter: FilterValuesType }
 
-export type TasksType = { [key: string]: Array<{ id: string, title: string, isDone: boolean }> }
+export type taskItemType = {
+    id: string,
+    title: string,
+    isDone: boolean
+}
 
-function App() {
+export type TasksType = { [key: string]: Array<taskItemType> }
+
+export  function AppWithReducers() {
 
 
     let todolistID1 = v1();
     let todolistID2 = v1();
 
-    let [todolists, setTodolists] = useState<Array<todolistsType>>([
+    let [todolists, todolistsDispatch] = useReducer(todolistsReducer, [
         {id: todolistID1, title: 'What to learn', filter: 'all'},
         {id: todolistID2, title: 'What to buy', filter: 'all'},
     ])
 
-    let [tasks, setTasks] = useState<TasksType>({
+    let [tasks, tasksDispatch] = useReducer(tasksReducer, {
         [todolistID1]: [
             {id: v1(), title: "HTML&CSS", isDone: true},
             {id: v1(), title: "JS", isDone: true},
@@ -39,49 +59,42 @@ function App() {
             {id: v1(), title: "Rest API2", isDone: false},
             {id: v1(), title: "GraphQL2", isDone: false},
         ]
-    });
+    })
+
 
     const removeTodolist = (todolistsID: string) => {
-        let currentTodolist = todolists.filter(f => f.id !== todolistsID);
-        if (currentTodolist) {
-            setTodolists(currentTodolist)
-        }
+        todolistsDispatch(removeTodolistAC(todolistsID))
     }
 
     function removeTask(todolistsID: string, id: string) {
-
-        setTasks({...tasks, [todolistsID]: tasks[todolistsID].filter(t => t.id != id)})
+        tasksDispatch(removeTaskAC(todolistsID, id))
     }
 
     function addTask(todolistsID: string, title: string) {
-        setTasks({
-            ...tasks, [todolistsID]: [...tasks[todolistsID],
-                {id: v1(), title: title, isDone: false}]
-        })
+        tasksDispatch(addTaskAC(todolistsID, title))
     }
 
     function changeStatus(todolistsID: string, taskId: string, isDone: boolean) {
-        setTasks({...tasks, [todolistsID]: tasks[todolistsID].map(t => t.id === taskId ? {...t, isDone} : t)})
+       tasksDispatch(changeTaskStatusAC(todolistsID, taskId, isDone))
     }
 
 
     function changeFilter(value: FilterValuesType, todolistsID: string) {
-        setTodolists(todolists.map(tl => tl.id === todolistsID ? {...tl, filter: value} : tl))
+        todolistsDispatch(changeFilterAC(todolistsID, value))
     }
 
     const addTodolist = (title: string) => {
         let newID = v1();
-        setTodolists([...todolists, {id: newID, title, filter: 'all'}])
-        setTasks({...tasks, [newID]: []})
+        todolistsDispatch(addTodolistAC(newID, title))
+        tasksDispatch(addTasksArrayAC(newID))
     }
 
     const changeTaskTitle = (todolistID: string, value: string, taskId: string) => {
-        setTasks({...tasks, [todolistID]:
-                tasks[todolistID].map(t => t.id === taskId ? {...t, title: value} : t)})
+        tasksDispatch(changeTaskTitleAC(todolistID, taskId, value))
     }
 
     const changeTodolistTitle = (todolistID: string, title: string) => {
-        setTodolists(todolists.map(tl => tl.id === todolistID ? {...tl, title} : tl))
+        todolistsDispatch(changeTodolistTitleAC(todolistID, title))
     }
 
     return (
@@ -134,4 +147,3 @@ function App() {
     );
 }
 
-export default App;

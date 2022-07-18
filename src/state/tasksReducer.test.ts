@@ -1,4 +1,4 @@
-import {TasksType} from "../AppWithReducers";
+import {TasksType} from "../components/AppWithReducers";
 import {v1} from "uuid";
 import {
     addTaskAC,

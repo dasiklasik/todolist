@@ -1,8 +1,8 @@
 import React, {useCallback} from 'react';
-import './App.css';
+import '../App.css';
 import {Todolist} from './Todolist';
 import {v1} from 'uuid';
-import {AddItemForm} from "./AddItemForm";
+import {AddItemForm} from "../AddItemForm";
 import MenuIcon from '@mui/icons-material/Menu';
 import { AppBar, Container, Grid, IconButton, Paper, Toolbar } from '@mui/material';
 import {
@@ -10,16 +10,16 @@ import {
     changeFilterAC,
     changeTodolistTitleAC,
     removeTodolistAC,
-} from "./state/todolistsReducer";
+} from "../state/todolistsReducer";
 import {
     addTaskAC,
     addTasksArrayAC,
     changeTaskStatusAC,
     changeTaskTitleAC,
     removeTaskAC,
-} from "./state/tasksReducer";
+} from "../state/tasksReducer";
 import {useDispatch, useSelector} from "react-redux";
-import {reducerType} from "./state/store";
+import {reducerType} from "../state/store";
 
 
 export type FilterValuesType = "all" | "active" | "completed";
