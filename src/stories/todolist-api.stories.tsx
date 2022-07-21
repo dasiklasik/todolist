@@ -1,5 +1,6 @@
-import React, {ChangeEvent, useEffect, useState} from 'react'
-import {todolistAPI, updateTaskType} from "../api/todolistAPI";
+import React, {ChangeEvent, useEffect, useReducer, useState} from 'react'
+import {TaskStatuses, TaskType, todolistAPI, updateTaskType} from "../api/todolistAPI";
+import {action} from "@storybook/addon-actions";
 
 export default {
     title: 'API'
@@ -175,22 +176,38 @@ export const DeleteTask = () => {
     </div>
 }
 
-export const UpdateTask = () => {
-    const [state, setState] = useState<any>(null)
+
+type taskState = {
+    todolistId: string
+    taskId: string
+    title: string
+    desc: string
+    status: number
+    priority: number
+    startDate: string
+    deadline: string
+}
+
+export const UpdateTask = ( ) => {
+        const [state, setState] = useState<any>(null)
+
+
     useEffect(() => {
         const todolistId = '1920a14b-af6b-431c-9ae2-706c609885e7'
-        const taskId = '1920a14b-af6b-431c-9ae2-706c609885e7'
-        const task: updateTaskType = {
-            title: 'React',
-            description: 'learn all',
-            status: 0,
-            priority: 4,
-            startDate: '2022-07-19T10:00:00.00',
-            deadline: '2022-07-20T20:00:00.00',
+        const task: updateTaskType ={
+            title: "My edited task",
+            status: TaskStatuses.New,
+            deadline: "",
+            startDate: "",
+            priority: 0,
+            description: "",
         }
+        const taskId = 'ab4f7663-cbe6-4345-a694-6c882fb2d228'
         todolistAPI.updateTask(todolistId, taskId, task)
-            .then(response => setState(response))
-            .catch(error => console.log(error))
+            .then((data) => {
+                console.log(data)
+                setState(data)
+            })
     }, [])
 
     return <div> {JSON.stringify(state)}</div>

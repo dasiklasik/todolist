@@ -95,9 +95,11 @@ export const todolistAPI = {
             .then(response => response.data)
     },
     updateTask: (todolistId: string, taskId: string, task: updateTaskType) => {
-        const tasks = JSON.stringify(task)
-        return instance.put<ResponseType>(`/todo-lists/${todolistId}/tasks/${taskId}`, {tasks})
-            .then(response => response.data)
+        return instance.put<ResponseType>(`/todo-lists/${todolistId}/tasks/${taskId}`, task)
+            .then(response => {
+                console.log(response.data)
+                return response.data
+            })
             .catch(error => error)
     },
 }
