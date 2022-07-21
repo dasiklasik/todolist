@@ -1,13 +1,13 @@
-import { Delete } from "@mui/icons-material";
-import { Checkbox, IconButton } from "@mui/material";
+import {Delete} from "@mui/icons-material";
+import {Checkbox, IconButton} from "@mui/material";
 import React, {ChangeEvent, useCallback} from "react";
+import {TaskStatuses, TaskType} from "../api/todolistAPI";
 import {EditableSpan} from "./EditableSpan";
-import { TaskType } from "./Todolist";
 
 type TaskPropsType = {
     removeTask: (todolistsID: string, taskId: string) => void
     todolistsID: string
-    changeTaskStatus: (todolistsID: string, taskId: string, isDone: boolean) => void
+    changeTaskStatus: (todolistsID: string, taskId: string, status: TaskStatuses) => void
     changeTaskTitle: (todolistID: string, value: string, taskId: string) => void
     task: TaskType
 }
@@ -24,17 +24,19 @@ export const Task = React.memo((props: TaskPropsType) => {
     const onClickHandler = useCallback(() => removeTask(todolistsID, task.id)
         , [removeTask, task.id, todolistsID])
     const onChangeStatusHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        changeTaskStatus(todolistsID, task.id, e.currentTarget.checked);
+        let status = TaskStatuses.New
+        if (e.currentTarget.checked) status = TaskStatuses.Completed
+        changeTaskStatus(todolistsID, task.id, status);
     }, [task.id, todolistsID, changeTaskStatus])
 
     const onChangeTitleHandler = useCallback((value: string) => {
         changeTaskTitle(todolistsID, value, task.id);
     }, [changeTaskTitle, todolistsID, task.id])
-
-    return <li key={task.id} className={task.isDone ? "is-done" : ""}>
+debugger
+    return <li key={task.id} className={task.status === TaskStatuses.Completed ? "is-done" : ""}>
         <Checkbox
             onChange={onChangeStatusHandler}
-            checked={task.isDone}/>
+            checked={task.status === TaskStatuses.Completed}/>
         <EditableSpan title={task.title} onChange={onChangeTitleHandler}/>
         <IconButton aria-label="delete" size={'small'} onClick={onClickHandler}>
             <Delete/>

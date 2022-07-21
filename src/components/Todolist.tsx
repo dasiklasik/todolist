@@ -1,25 +1,21 @@
 import React, {useCallback} from 'react';
-import {FilterValuesType} from './App';
 import {AddItemForm} from "../AddItemForm";
 import {EditableSpan} from "./EditableSpan";
 import '../App.css'
 import {Task} from "./Task";
-import { Button, IconButton } from '@mui/material';
-import { Delete } from '@mui/icons-material';
+import {Button, IconButton} from '@mui/material';
+import {Delete} from '@mui/icons-material';
+import {TaskStatuses, TaskType} from "../api/todolistAPI";
+import {FilterValuesType} from '../state/todolistsReducer';
 
 
-export type TaskType = {
-    id: string
-    title: string
-    isDone: boolean
-}
 type PropsType = {
     title: string
     tasks: Array<TaskType>
     removeTask: (todolistsID: string, taskId: string) => void
     changeFilter: (value: FilterValuesType, todolistsID: string) => void
     addTask: (todolistsID: string, title: string) => void
-    changeTaskStatus: (todolistsID: string, taskId: string, isDone: boolean) => void
+    changeTaskStatus: (todolistsID: string, taskId: string, status: TaskStatuses) => void
     filter: FilterValuesType
     todolistsID: string
     removeTodolist: (todolistsID: string) => void
@@ -28,7 +24,7 @@ type PropsType = {
 }
 
 export const Todolist = React.memo((props: PropsType) => {
-    console.log('Todolist' + props.todolistsID)
+
     const addTask = useCallback((title: string) => {
         props.addTask(props.todolistsID, title);
     }, [props.addTask, props.todolistsID])
@@ -36,10 +32,10 @@ export const Todolist = React.memo((props: PropsType) => {
     let tasksForTodolist = props.tasks
 
     if (props.filter === "active") {
-        tasksForTodolist = props.tasks.filter(t => t.isDone === false);
+        tasksForTodolist = props.tasks.filter(t => t.status === TaskStatuses.New);
     }
     if (props.filter === "completed") {
-        tasksForTodolist = props.tasks.filter(t => t.isDone === true);
+        tasksForTodolist = props.tasks.filter(t => t.status === TaskStatuses.Completed);
     }
 
     const onAllClickHandler = useCallback(() => props.changeFilter("all", props.todolistsID)

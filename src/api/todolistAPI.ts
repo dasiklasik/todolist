@@ -20,21 +20,37 @@ type ResponseType<D = {}> = {
     data: D
 }
 
-export type taskType = {
+
+export enum TaskStatuses {
+    New = 0,
+    InProgress = 1,
+    Completed = 2,
+    Draft = 3,
+}
+
+export enum TaskPriorities {
+    Low = 0,
+    Middle = 1,
+    Hi = 2,
+    Urgently = 3,
+    Later = 4,
+}
+
+export type TaskType = {
     id: string
     todoListId: string
     order: number
     description: string
     title: string
-    status: number
-    priority: number
+    status: TaskStatuses
+    priority: TaskPriorities
     startDate: string
     deadline: string
     addedDate: string
 }
 
 type getTasksType = {
-    items: taskType[]
+    items: TaskType[]
     totalCount: number
     error: string | null
 }
@@ -54,7 +70,7 @@ export const todolistAPI = {
             .then(response => response.data)
     },
     createTodolist: (title: string) => {
-        return instance.post<ResponseType<{item: TodolistType}>>('todo-lists', {title})
+        return instance.post<ResponseType<{ item: TodolistType }>>('todo-lists', {title})
             .then(response => response.data)
     },
     deleteTodolist: (todolistId: string) => {
@@ -65,12 +81,12 @@ export const todolistAPI = {
         return instance.put<ResponseType>(`todo-lists/${todolistId}`, {title})
             .then(response => response.data)
     },
-    getTasks: (todolistId: string, pageSize =10, pageNumber = 1) => {
+    getTasks: (todolistId: string, pageSize = 10, pageNumber = 1) => {
         return instance.get<getTasksType>(`/todo-lists/${todolistId}/tasks?count=${pageSize}&page=${pageNumber}`)
             .then(response => response.data)
     },
     createTask: (todolistId: string, taskTitle: string) => {
-        return instance.post<ResponseType<{item: taskType}>>(`/todo-lists/${todolistId}/tasks`,
+        return instance.post<ResponseType<{ item: TaskType }>>(`/todo-lists/${todolistId}/tasks`,
             {todolistId, title: taskTitle})
             .then(response => response.data)
     },

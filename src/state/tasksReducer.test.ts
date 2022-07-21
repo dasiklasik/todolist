@@ -1,4 +1,3 @@
-import {TasksType} from "../components/AppWithReducers";
 import {v1} from "uuid";
 import {
     addTaskAC,
@@ -6,27 +5,75 @@ import {
     changeTaskStatusAC,
     changeTaskTitleAC,
     removeTaskAC,
-    tasksReducer
+    tasksReducer,
+    TasksType
 } from "./tasksReducer";
 import {todolistID1, todolistID2} from "./todolistsReducer";
+import {TaskPriorities, TaskStatuses} from "../api/todolistAPI";
 
 let initialState: TasksType;
 
 beforeEach(() => {
     return  initialState ={
         [todolistID1]: [
-            {id: v1(), title: "HTML&CSS", isDone: true},
-            {id: v1(), title: "JS", isDone: true},
-            {id: v1(), title: "ReactJS", isDone: false},
-            {id: v1(), title: "Rest API", isDone: false},
-            {id: v1(), title: "GraphQL", isDone: false},
+            {
+                id: v1(),
+                title: "HTML&CSS",
+                status: TaskStatuses.Completed,
+                order: 0,
+                todoListId: todolistID1,
+                description: '',
+                priority: TaskPriorities.Low,
+                startDate: '',
+                deadline: '',
+                addedDate: '',
+            },
+            {
+                id: v1(), title: "JS", status: TaskStatuses.Completed, order: 0, todoListId: todolistID1, description: '',
+                priority: TaskPriorities.Low, startDate: '', deadline: '', addedDate: '',
+            },
+            {
+                id: v1(), title: "ReactJS", status: TaskStatuses.New, order: 0, todoListId: todolistID1, description: '',
+                priority: TaskPriorities.Low, startDate: '', deadline: '', addedDate: '',
+            },
+            {
+                id: v1(), title: "Rest API", status: TaskStatuses.New, order: 0, todoListId: todolistID1, description: '',
+                priority: TaskPriorities.Low, startDate: '', deadline: '', addedDate: '',
+            },
+            {
+                id: v1(), title: "GraphQL", status: TaskStatuses.New, order: 0, todoListId: todolistID1, description: '',
+                priority: TaskPriorities.Low, startDate: '', deadline: '', addedDate: '',
+            },
         ],
         [todolistID2]: [
-            {id: v1(), title: "HTML&CSS2", isDone: true},
-            {id: v1(), title: "JS2", isDone: true},
-            {id: v1(), title: "ReactJS2", isDone: false},
-            {id: v1(), title: "Rest API2", isDone: false},
-            {id: v1(), title: "GraphQL2", isDone: false},
+            {
+                id: v1(),
+                title: "HTML&CSS2",
+                status: TaskStatuses.Completed,
+                order: 0,
+                todoListId: todolistID1,
+                description: '',
+                priority: TaskPriorities.Low,
+                startDate: '',
+                deadline: '',
+                addedDate: '',
+            },
+            {
+                id: v1(), title: "JS2", status: TaskStatuses.Completed, order: 0, todoListId: todolistID1, description: '',
+                priority: TaskPriorities.Low, startDate: '', deadline: '', addedDate: '',
+            },
+            {
+                id: v1(), title: "ReactJS2", status: TaskStatuses.New, order: 0, todoListId: todolistID1, description: '',
+                priority: TaskPriorities.Low, startDate: '', deadline: '', addedDate: '',
+            },
+            {
+                id: v1(), title: "Rest API2", status: TaskStatuses.New, order: 0, todoListId: todolistID1, description: '',
+                priority: TaskPriorities.Low, startDate: '', deadline: '', addedDate: '',
+            },
+            {
+                id: v1(), title: "GraphQL2", status: TaskStatuses.New, order: 0, todoListId: todolistID1, description: '',
+                priority: TaskPriorities.Low, startDate: '', deadline: '', addedDate: '',
+            },
         ]
     }
 })
@@ -48,9 +95,9 @@ test('task reducer should add task', () => {
 
 test('task reducer should change task status', () => {
     const endState = tasksReducer(initialState, changeTaskStatusAC(todolistID1,
-        initialState[todolistID1][0].id, false))
+        initialState[todolistID1][0].id, TaskStatuses.New))
 
-    expect(endState[todolistID1][0].isDone).toBe(false)
+    expect(endState[todolistID1][0].status).toBe(TaskStatuses.New)
 })
 
 
