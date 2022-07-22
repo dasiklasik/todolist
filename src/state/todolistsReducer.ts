@@ -1,5 +1,6 @@
 import {v1} from "uuid";
 import {TodolistType} from "../api/todolistAPI";
+
 export let todolistID1 = v1();
 export let todolistID2 = v1();
 
@@ -9,6 +10,7 @@ enum TODOLIST_TYPES {
     ADD_TODOLIST = 'ADD_TODOLIST',
     CHANGE_TODOLIST_TITLE = 'CHANGE_TODOLIST_TITLE',
     CHANGE_TODOLIST_FILTER = 'CHANGE_TODOLIST_FILTER',
+    SET_TODOLISTS = 'SET_TODOLISTS',
 }
 
 export type TodolistDomainType = TodolistType & {
@@ -26,15 +28,16 @@ export type addTodolistType = ReturnType<typeof addTodolist>
 
 export type changeTodolistTitleType = ReturnType<typeof changeTodolistTitle>
 
+export type setTodolistType = ReturnType<typeof setTodolist>
+
 type actionType =
     changeFilterType
     | removeTodolistType
     | addTodolistType
-    | changeTodolistTitleType
+    | changeTodolistTitleType | setTodolistType
 
 
 const initialState: Array<TodolistDomainType> = []
-
 
 
 export const todolistsReducer = (state = initialState, action: actionType): Array<TodolistDomainType> => {
@@ -54,6 +57,9 @@ export const todolistsReducer = (state = initialState, action: actionType): Arra
             return copyState.map(t => t.id === action.id ? {...t, title: action.title} : t)
         case TODOLIST_TYPES.CHANGE_TODOLIST_FILTER:
             return copyState.map(t => t.id === action.id ? {...t, filter: action.filter} : t)
+        case TODOLIST_TYPES.SET_TODOLISTS:
+            // let newTodolists: Array<TodolistDomainType> = action.todolists.map(t => {...t, filter: 'all'})
+            // return [... copyState, [...]]
         default:
             return state
     }
@@ -87,5 +93,12 @@ export const changeFilter = (id: string, filter: FilterValuesType) => {
         type: TODOLIST_TYPES.CHANGE_TODOLIST_FILTER as const,
         id,
         filter
+    }
+}
+
+export const setTodolist = (todolists: Array<TodolistType>) => {
+    return {
+        type: TODOLIST_TYPES.SET_TODOLISTS as const,
+        todolists,
     }
 }

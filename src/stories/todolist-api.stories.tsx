@@ -205,7 +205,7 @@ export const UpdateTask = ( ) => {
         const taskId = 'ab4f7663-cbe6-4345-a694-6c882fb2d228'
         todolistAPI.updateTask(todolistId, taskId, task)
             .then((data) => {
-                console.log(data)
+                console.log(data )
                 setState(data)
             })
     }, [])
