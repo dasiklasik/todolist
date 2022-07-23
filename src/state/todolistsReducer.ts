@@ -58,8 +58,9 @@ export const todolistsReducer = (state = initialState, action: actionType): Arra
         case TODOLIST_TYPES.CHANGE_TODOLIST_FILTER:
             return copyState.map(t => t.id === action.id ? {...t, filter: action.filter} : t)
         case TODOLIST_TYPES.SET_TODOLISTS:
-            // let newTodolists: Array<TodolistDomainType> = action.todolists.map(t => {...t, filter: 'all'})
-            // return [... copyState, [...]]
+            return action.todolists.map(tl => {
+                return {...tl, filter: 'all'}
+            })
         default:
             return state
     }
