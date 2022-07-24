@@ -4,7 +4,7 @@ import {
     changeFilterType, changeTodolistTitle,
     changeTodolistTitleType,
     FilterValuesType,
-    removeTodolist, removeTodolistType, setTodolist, TodolistDomainType,
+    removeTodolist, removeTodolistType, setTodolists, TodolistDomainType,
     todolistsReducer
 } from "./todolistsReducer";
 import {todolistAPI, TodolistType} from "../api/todolistAPI";
@@ -93,7 +93,7 @@ test('todolists should be set', () => {
 
     todolistAPI.getTodolist()
         .then(response => {
-            endState = todolistsReducer(startState, setTodolist(response))
+            endState = todolistsReducer(startState, setTodolists(response))
             expect(endState[0].id).toBe('72f89144-c8df-44ca-b9b0-e00b83d06b33')
         })
 
