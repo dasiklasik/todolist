@@ -95,11 +95,11 @@ export function AppWithRedux() {
                     {todolists.map((m) => {
                         return (
 
-                            <Paper style={{padding: "20px", marginBottom: '20px'}}>
+                            <Paper style={{padding: "20px", marginBottom: '20px'}} key={m.id}>
                                 <Todolist
                                     key={m.id}
                                     title={m.title}
-                                    todolistsID={m.id}
+                                    todolistID={m.id}
                                     tasks={tasks[m.id]}
                                     removeTask={removeTask}
                                     changeFilter={setFilter}

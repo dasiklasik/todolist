@@ -1,6 +1,7 @@
 import {v1} from "uuid";
-import {TaskPriorities, TaskStatuses, TaskType, TodolistType} from "../api/todolistAPI";
+import {TaskPriorities, TaskStatuses, TaskType, todolistAPI, TodolistType} from "../api/todolistAPI";
 import {setTodolistType} from "./todolistsReducer";
+import {Dispatch} from "redux";
 
 type removeTaskACType = ReturnType<typeof removeTaskAC>
 type addTaskACType = ReturnType<typeof addTaskAC>
@@ -58,7 +59,8 @@ export const tasksReducer = (state = initialState, action: actionType): TasksTyp
             return copyState;
         }
         case 'SET-TASKS': {
-            return state
+            copyState[action.todolistId] = action.tasks
+            return copyState
         }
         default: {
             return state
@@ -117,9 +119,15 @@ export const addTasksArrayAC = (todolistId: string) => {
     }
 }
 
-export const setTasks = (tasks: TaskType) => {
+export const setTasks = (tasks: TaskType[], todolistId: string) => {
     return {
         type: 'SET-TASKS' as const,
         tasks,
+        todolistId,
     }
+}
+
+export const fetchTasks = (todolistId: string) => (dispatch: Dispatch) => {
+    todolistAPI.getTasks(todolistId)
+        .then(response => dispatch(setTasks(response.items, todolistId)))
 }

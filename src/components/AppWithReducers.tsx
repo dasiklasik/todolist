@@ -180,11 +180,11 @@ export  function AppWithReducers() {
                         }
                         return (
                             <Grid container>
-                                <Paper style={{padding: "20px",}}>
+                                <Paper style={{padding: "20px",}} key={m.id}>
                                     <Todolist
                                         key={m.id}
                                         title={m.title}
-                                        todolistsID={m.id}
+                                        todolistID={m.id}
                                         tasks={tasksForTodolist}
                                         removeTask={removeTask}
                                         changeFilter={changeFilterInner}

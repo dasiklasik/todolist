@@ -6,7 +6,7 @@ import {EditableSpan} from "./EditableSpan";
 
 type TaskPropsType = {
     removeTask: (todolistsID: string, taskId: string) => void
-    todolistsID: string
+    todolistID: string
     changeTaskStatus: (todolistsID: string, taskId: string, status: TaskStatuses) => void
     changeTaskTitle: (todolistID: string, value: string, taskId: string) => void
     task: TaskType
@@ -15,24 +15,24 @@ export const Task = React.memo((props: TaskPropsType) => {
 
     const {
         removeTask,
-        todolistsID,
+        todolistID,
         changeTaskStatus,
         changeTaskTitle,
         task
     } = props
 
-    const onClickHandler = useCallback(() => removeTask(todolistsID, task.id)
-        , [removeTask, task.id, todolistsID])
+    const onClickHandler = useCallback(() => removeTask(todolistID, task.id)
+        , [removeTask, task.id, todolistID])
     const onChangeStatusHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         let status = TaskStatuses.New
         if (e.currentTarget.checked) status = TaskStatuses.Completed
-        changeTaskStatus(todolistsID, task.id, status);
-    }, [task.id, todolistsID, changeTaskStatus])
+        changeTaskStatus(todolistID, task.id, status);
+    }, [task.id, todolistID, changeTaskStatus])
 
     const onChangeTitleHandler = useCallback((value: string) => {
-        changeTaskTitle(todolistsID, value, task.id);
-    }, [changeTaskTitle, todolistsID, task.id])
-debugger
+        changeTaskTitle(todolistID, value, task.id);
+    }, [changeTaskTitle, todolistID, task.id])
+
     return <li key={task.id} className={task.status === TaskStatuses.Completed ? "is-done" : ""}>
         <Checkbox
             onChange={onChangeStatusHandler}
