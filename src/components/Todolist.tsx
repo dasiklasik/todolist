@@ -5,7 +5,7 @@ import '../App.css'
 import {Task} from "./Task";
 import {Button, IconButton} from '@mui/material';
 import {Delete} from '@mui/icons-material';
-import {TaskStatuses, TaskType, todolistAPI} from "../api/todolistAPI";
+import {TaskStatuses, TaskType, todolistAPI, updateTaskType} from "../api/todolistAPI";
 import {FilterValuesType} from '../state/todolistsReducer';
 import {useDispatch} from "react-redux";
 import {fetchTasks} from "../state/tasksReducer";
@@ -20,11 +20,11 @@ type PropsType = {
     removeTask: (todolistsID: string, taskId: string) => void
     changeFilter: (value: FilterValuesType, todolistsID: string) => void
     addTask: (todolistsID: string, title: string) => void
-    changeTaskStatus: (todolistsID: string, taskId: string, status: TaskStatuses) => void
+    changeTaskStatus: (todolistsID: string, taskId: string, task: updateTaskType) => void
     filter: FilterValuesType
     todolistID: string
     removeTodolist: (todolistsID: string) => void
-    changeTaskTitle: (todolistID: string, value: string, taskId: string) => void
+    changeTaskTitle: (todolistID: string, taskId: string, task: updateTaskType) => void
     changeTodolistTitle: (todolistId: string, title: string) => void
 }
 

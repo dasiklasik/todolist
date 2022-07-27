@@ -6,7 +6,7 @@ import {AddItemForm} from "../AddItemForm";
 
 import MenuIcon from '@mui/icons-material/Menu';
 import {AppBar, Container, Grid, IconButton, Paper, Toolbar} from '@mui/material';
-import {TaskPriorities, TaskStatuses} from "../api/todolistAPI";
+import {TaskPriorities, TaskStatuses, updateTaskType} from "../api/todolistAPI";
 import {FilterValuesType, TodolistDomainType} from "../state/todolistsReducer";
 import {TasksType} from '../state/tasksReducer';
 
@@ -117,8 +117,12 @@ function App() {
         })
     }
 
-    function changeStatus(todolistsID: string, taskId: string, status: TaskStatuses) {
-        setTasks({...tasks, [todolistsID]: tasks[todolistsID].map(t => t.id === taskId ? {...t, status} : t)})
+    // function changeStatus(todolistsID: string, taskId: string, status: TaskStatuses) {
+    //     setTasks({...tasks, [todolistsID]: tasks[todolistsID].map(t => t.id === taskId ? {...t, status} : t)})
+    // }
+
+    function changeStatus(todolistsID: string, taskId: string, task: updateTaskType) {
+
     }
 
 
@@ -132,11 +136,11 @@ function App() {
         setTasks({...tasks, [newID]: []})
     }
 
-    const changeTaskTitle = (todolistID: string, value: string, taskId: string) => {
-        setTasks({
-            ...tasks, [todolistID]:
-                tasks[todolistID].map(t => t.id === taskId ? {...t, title: value} : t)
-        })
+    const changeTaskTitle = (todolistID: string, taskId: string, task: updateTaskType) => {
+        // setTasks({
+        //     ...tasks, [todolistID]:
+        //         tasks[todolistID].map(t => t.id === taskId ? {...t, title: value} : t)
+        // })
     }
 
     const changeTodolistTitle = (todolistID: string, title: string) => {

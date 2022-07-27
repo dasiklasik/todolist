@@ -1,14 +1,14 @@
 import {Delete} from "@mui/icons-material";
 import {Checkbox, IconButton} from "@mui/material";
 import React, {ChangeEvent, useCallback} from "react";
-import {TaskStatuses, TaskType} from "../api/todolistAPI";
+import {TaskStatuses, TaskType, updateTaskType} from "../api/todolistAPI";
 import {EditableSpan} from "./EditableSpan";
 
 type TaskPropsType = {
     removeTask: (todolistsID: string, taskId: string) => void
     todolistID: string
-    changeTaskStatus: (todolistsID: string, taskId: string, status: TaskStatuses) => void
-    changeTaskTitle: (todolistID: string, value: string, taskId: string) => void
+    changeTaskStatus: (todolistsID: string, taskId: string, task: updateTaskType) => void
+    changeTaskTitle: (todolistID: string, taskId: string, task: updateTaskType) => void
     task: TaskType
 }
 export const Task = React.memo((props: TaskPropsType) => {
@@ -18,7 +18,7 @@ export const Task = React.memo((props: TaskPropsType) => {
         todolistID,
         changeTaskStatus,
         changeTaskTitle,
-        task
+        task,
     } = props
 
     const onClickHandler = useCallback(() => removeTask(todolistID, task.id)
@@ -26,11 +26,20 @@ export const Task = React.memo((props: TaskPropsType) => {
     const onChangeStatusHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         let status = TaskStatuses.New
         if (e.currentTarget.checked) status = TaskStatuses.Completed
-        changeTaskStatus(todolistID, task.id, status);
+        const taskForUpdate: updateTaskType = {
+            deadline: task.deadline,
+            description: task.description,
+            priority: task.priority,
+            startDate: task.startDate,
+            status,
+            title: task.title,
+        }
+        changeTaskStatus(todolistID, task.id, taskForUpdate);
     }, [task.id, todolistID, changeTaskStatus])
 
-    const onChangeTitleHandler = useCallback((value: string) => {
-        changeTaskTitle(todolistID, value, task.id);
+    const onChangeTitleHandler = useCallback((title: string) => {
+        const updateTask: TaskType = {...task, title}
+        changeTaskTitle(todolistID, task.id, updateTask);
     }, [changeTaskTitle, todolistID, task.id])
 
     return <li key={task.id} className={task.status === TaskStatuses.Completed ? "is-done" : ""}>

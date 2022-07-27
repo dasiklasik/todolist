@@ -1,15 +1,7 @@
 import {v1} from "uuid";
-import {
-    addTaskAC,
-    addTasksArrayAC,
-    changeTaskStatusAC,
-    changeTaskTitleAC,
-    removeTaskAC,
-    tasksReducer,
-    TasksType
-} from "./tasksReducer";
+import {addTaskAC, changeTask, removeTaskAC, tasksReducer, TasksType} from "./tasksReducer";
 import {todolistID1, todolistID2} from "./todolistsReducer";
-import {TaskPriorities, TaskStatuses} from "../api/todolistAPI";
+import {TaskPriorities, TaskStatuses, TaskType} from "../api/todolistAPI";
 
 let initialState: TasksType;
 
@@ -87,32 +79,41 @@ test('task reducer should remove correct task', () => {
 })
 
 test('task reducer should add task', () => {
-    const endState = tasksReducer(initialState, addTaskAC(todolistID1, 'other'))
+    const task: TaskType = {
+        addedDate: "",
+        deadline: "",
+        description: "",
+        id: v1(),
+        order: 0,
+        priority: TaskPriorities.Low,
+        startDate: "",
+        status: TaskStatuses.New,
+        title: 'other',
+        todoListId: todolistID1,
 
-    expect(endState[todolistID1][0].title).toBe('other')
+    }
+    const endState = tasksReducer(initialState, addTaskAC(task))
+
+    expect(endState[todolistID1][5].title).toBe('other')
 })
 
 
 test('task reducer should change task status', () => {
-    const endState = tasksReducer(initialState, changeTaskStatusAC(todolistID1,
-        initialState[todolistID1][0].id, TaskStatuses.New))
+    let task = initialState[todolistID1][0]
+    task = {...task, status: TaskStatuses.Completed}
 
-    expect(endState[todolistID1][0].status).toBe(TaskStatuses.New)
+    const endState = tasksReducer(initialState, changeTask(task))
+
+    expect(endState[todolistID1][0].status).toBe(TaskStatuses.Completed)
 })
 
 
 test('task reducer should change task title', () => {
-    const endState = tasksReducer(initialState, changeTaskTitleAC(todolistID1,
-        initialState[todolistID1][0].id, 'some title'))
+
+    let task = initialState[todolistID1][0]
+    task = {...task, title: 'some title'}
+
+    const endState = tasksReducer(initialState, changeTask(task))
 
     expect(endState[todolistID1][0].title).toBe('some title')
-})
-
-test('task reducer should add tasks array', () => {
-
-    const todolistId3 = v1()
-
-    const endState = tasksReducer(initialState, addTasksArrayAC(todolistId3))
-
-    expect(endState[todolistId3]).toEqual([])
 })

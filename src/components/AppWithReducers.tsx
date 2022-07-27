@@ -13,14 +13,10 @@ import {
     todolistsReducer
 } from "../state/todolistsReducer";
 import {
-    addTaskAC,
-    addTasksArrayAC,
-    changeTaskStatusAC,
-    changeTaskTitleAC,
     removeTaskAC,
     tasksReducer
 } from "../state/tasksReducer";
-import {TaskPriorities, TaskStatuses} from "../api/todolistAPI";
+import {TaskPriorities, TaskStatuses, updateTaskType} from "../api/todolistAPI";
 
 
 export type FilterValuesType = "all" | "active" | "completed";
@@ -130,13 +126,15 @@ export  function AppWithReducers() {
     }
 
     function addTask(todolistsID: string, title: string) {
-        tasksDispatch(addTaskAC(todolistsID, title))
+        // tasksDispatch(addTaskAC(todolistsID, title))
     }
 
-    function changeStatus(todolistsID: string, taskId: string, status: TaskStatuses) {
-       tasksDispatch(changeTaskStatusAC(todolistsID, taskId, status))
-    }
+    // function changeStatus(todolistsID: string, taskId: string, status: TaskStatuses) {
+    //    tasksDispatch(changeTaskStatusAC(todolistsID, taskId, status))
+    // }
+    function changeStatus(todolistsID: string, taskId: string, task: updateTaskType) {
 
+    }
 
     function changeFilterInner(value: FilterValuesType, todolistsID: string) {
         todolistsDispatch(changeFilter(todolistsID, value))
@@ -144,12 +142,12 @@ export  function AppWithReducers() {
 
     const addTodolistInner = (title: string) => {
         let newID = v1();
-        todolistsDispatch(addTodolist(newID, title))
-        tasksDispatch(addTasksArrayAC(newID))
+        // todolistsDispatch(addTodolist(newID, title))
+        // tasksDispatch(addTasksArrayAC(newID))
     }
 
-    const changeTaskTitle = (todolistID: string, value: string, taskId: string) => {
-        tasksDispatch(changeTaskTitleAC(todolistID, taskId, value))
+    const changeTaskTitle = (todolistID: string, taskId: string, task: updateTaskType) => {
+        // tasksDispatch(changeTaskTitleAC(todolistID, taskId, value))
     }
 
     const changeTodolistTitleInner = (todolistID: string, title: string) => {
