@@ -1,9 +1,11 @@
 import {v1} from "uuid";
-import {addTaskAC, changeTask, removeTaskAC, tasksReducer, TasksType} from "./tasksReducer";
-import {todolistID1, todolistID2} from "./todolistsReducer";
-import {TaskPriorities, TaskStatuses, TaskType} from "../api/todolistAPI";
+import {addTask, changeTask, removeTask, tasksReducer, TasksType} from "./tasksReducer";
+import {TaskPriorities, TaskStatuses, TaskType} from "../../../api/todolistAPI";
 
 let initialState: TasksType;
+
+const todolistID1 = v1()
+const todolistID2 = v1()
 
 beforeEach(() => {
     return  initialState ={
@@ -71,7 +73,7 @@ beforeEach(() => {
 })
 
 test('task reducer should remove correct task', () => {
-    const endState = tasksReducer(initialState, removeTaskAC(todolistID1, initialState[todolistID1][0].id))
+    const endState = tasksReducer(initialState, removeTask(todolistID1, initialState[todolistID1][0].id))
 
     expect(endState[todolistID2].length).toBe(5)
     expect(endState[todolistID1].length).toBe(4)
@@ -92,7 +94,7 @@ test('task reducer should add task', () => {
         todoListId: todolistID1,
 
     }
-    const endState = tasksReducer(initialState, addTaskAC(task))
+    const endState = tasksReducer(initialState, addTask(task))
 
     expect(endState[todolistID1][5].title).toBe('other')
 })

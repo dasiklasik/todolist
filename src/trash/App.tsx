@@ -1,14 +1,14 @@
 import React, {useState} from 'react';
-import '../App.css';
-import {Todolist} from './Todolist';
+import '../app/App.css';
+import {Todolist} from '../features/TodolistsList/Todolist/Todolist';
 import {v1} from 'uuid';
-import {AddItemForm} from "../AddItemForm";
+import {AddItemForm} from "../components/AddItemForm/AddItemForm";
 
 import MenuIcon from '@mui/icons-material/Menu';
 import {AppBar, Container, Grid, IconButton, Paper, Toolbar} from '@mui/material';
 import {TaskPriorities, TaskStatuses, updateTaskType} from "../api/todolistAPI";
-import {FilterValuesType, TodolistDomainType} from "../state/todolistsReducer";
-import {TasksType} from '../state/tasksReducer';
+import {FilterValuesType, TodolistDomainType} from "../features/TodolistsList/bll/todolistsReducer";
+import {TasksType} from '../features/TodolistsList/bll/tasksReducer';
 
 
 function App() {

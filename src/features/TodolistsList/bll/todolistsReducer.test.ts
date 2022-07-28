@@ -1,12 +1,9 @@
 import {v1} from "uuid"
-import { changeFilter,
-    changeFilterType, changeTodolistTitle,
-    changeTodolistTitleType,
-    FilterValuesType,
-    removeTodolist, removeTodolistType, setTodolists, TodolistDomainType,
+import { changeFilter, changeTodolistTitle, FilterValuesType,
+    removeTodolist, setTodolists, TodolistDomainType,
     todolistsReducer
 } from "./todolistsReducer";
-import {todolistAPI, TodolistType} from "../api/todolistAPI";
+import {todolistAPI, TodolistType} from "../../../api/todolistAPI";
 
 
 let todolistId1 = v1()
@@ -36,7 +33,7 @@ beforeEach(() => {
 test('correct todolist should be removed', () => {
 
 
-    const action: removeTodolistType = removeTodolist(todolistId1)
+    const action = removeTodolist(todolistId1)
 
     const endState = todolistsReducer(startState, action)
 
@@ -51,7 +48,7 @@ test('correct todolist should change its name', () => {
     let newTodolistTitle = "New Todolist";
 
 
-    const action: changeTodolistTitleType = changeTodolistTitle(todolistId2, newTodolistTitle)
+    const action = changeTodolistTitle(todolistId2, newTodolistTitle)
 
     const endState = todolistsReducer(startState, action);
 
@@ -64,7 +61,7 @@ test('correct filter of todolist should be changed', () => {
     let newFilter: FilterValuesType = "completed";
 
 
-    const action: changeFilterType = changeFilter(todolistId2, newFilter)
+    const action = changeFilter(todolistId2, newFilter)
 
     const endState = todolistsReducer(startState, action);
 

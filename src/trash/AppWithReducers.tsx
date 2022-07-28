@@ -1,8 +1,8 @@
 import React, {useReducer} from 'react';
-import '../App.css';
-import {Todolist} from './Todolist';
+import '../app/App.css';
+import {Todolist} from '../features/TodolistsList/Todolist/Todolist';
 import {v1} from 'uuid';
-import {AddItemForm} from "../AddItemForm";
+import {AddItemForm} from "../components/AddItemForm/AddItemForm";
 import MenuIcon from '@mui/icons-material/Menu';
 import { AppBar, Container, Grid, IconButton, Paper, Toolbar } from '@mui/material';
 import {
@@ -11,11 +11,11 @@ import {
     changeTodolistTitle,
     removeTodolist,
     todolistsReducer
-} from "../state/todolistsReducer";
+} from "../features/TodolistsList/bll/todolistsReducer";
 import {
-    removeTaskAC,
+    removeTask,
     tasksReducer
-} from "../state/tasksReducer";
+} from "../features/TodolistsList/bll/tasksReducer";
 import {TaskPriorities, TaskStatuses, updateTaskType} from "../api/todolistAPI";
 
 
@@ -121,8 +121,8 @@ export  function AppWithReducers() {
         todolistsDispatch(removeTodolist(todolistsID))
     }
 
-    function removeTask(todolistsID: string, id: string) {
-        tasksDispatch(removeTaskAC(todolistsID, id))
+    function deleteTask(todolistsID: string, id: string) {
+        tasksDispatch(removeTask(todolistsID, id))
     }
 
     function addTask(todolistsID: string, title: string) {
@@ -184,7 +184,7 @@ export  function AppWithReducers() {
                                         title={m.title}
                                         todolistID={m.id}
                                         tasks={tasksForTodolist}
-                                        removeTask={removeTask}
+                                        removeTask={deleteTask}
                                         changeFilter={changeFilterInner}
                                         addTask={addTask}
                                         changeTaskStatus={changeStatus}
