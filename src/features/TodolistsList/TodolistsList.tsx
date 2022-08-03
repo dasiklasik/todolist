@@ -76,15 +76,13 @@ export const TodolistsList = () => {
 
                         <Paper style={{padding: "20px", marginBottom: '20px'}} key={m.id}>
                             <Todolist
+                                todolistData={m}
                                 key={m.id}
-                                title={m.title}
-                                todolistID={m.id}
                                 tasks={tasks[m.id]}
                                 removeTask={removeTask}
                                 changeFilter={setFilter}
                                 addTask={addTask}
                                 changeTaskStatus={changeStatus}
-                                filter={m.filter}
                                 removeTodolist={deleteTodolist}
                                 changeTaskTitle={changeTaskTitle}
                                 changeTodolistTitle={changeTodolistTitle}

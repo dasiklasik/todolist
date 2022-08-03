@@ -1,9 +1,13 @@
 import {v1} from "uuid"
-import { changeFilter, changeTodolistTitle, FilterValuesType,
-    removeTodolist, setTodolists, TodolistDomainType,
+import {
+    changeFilter,
+    changeTodolistTitle,
+    FilterValuesType,
+    removeTodolist,
+    TODOLIST_TYPES,
+    TodolistDomainType,
     todolistsReducer
 } from "./todolistsReducer";
-import {todolistAPI, TodolistType} from "../../../api/todolistAPI";
 
 
 let todolistId1 = v1()
@@ -71,20 +75,11 @@ test('correct filter of todolist should be changed', () => {
     expect(endState[1].filter).toBe(newFilter);
 });
 
-test('todolists should be set', () => {
+test('test should change entity status', () => {
+    const endState = todolistsReducer(startState,
+        {type: TODOLIST_TYPES.SET_ENTITY_STATUS, id: todolistId1, status: 'loading'})
 
-    let endState:Array<TodolistType>
-
-    todolistAPI.getTodolist()
-        .then(response => {
-            endState = todolistsReducer(startState, setTodolists(response))
-            expect(endState[0].id).toBe('72f89144-c8df-44ca-b9b0-e00b83d06b33')
-        })
-
-
-
-
-
+    expect(endState[0].entityStatus).toBe('loading')
 })
 
 

@@ -1,7 +1,7 @@
 import {TaskType, todolistAPI, updateTaskType} from "../../../api/todolistAPI";
 import {Dispatch} from "redux";
 import {addTodolistType, removeTodolistType, setTodolistsType, TODOLIST_TYPES} from "./todolistsReducer";
-import {setError, setErrorType, setStatus, setStatusType} from "../../../app/bll/app-reducer";
+import {setAppError, setAppErrorType, setAppStatus, setAppStatusType} from "../../../app/bll/app-reducer";
 
 
 enum TASKS_TYPES {
@@ -60,11 +60,11 @@ export const changeTask = (task: TaskType) =>
 
 //thunks
 export const fetchTasks = (todolistId: string) => (dispatch: Dispatch<actionType>) => {
-    dispatch(setStatus('loading'))
+    dispatch(setAppStatus('loading'))
     todolistAPI.getTasks(todolistId)
         .then(response => {
             dispatch(setTasks(response.items, todolistId))
-            dispatch(setStatus('succeeded'))
+            dispatch(setAppStatus('succeeded'))
         })
 }
 export const removeTaskThunk = (todolistId: string, taskId: string) => (dispatch: Dispatch<actionType>) => {
@@ -75,19 +75,19 @@ export const removeTaskThunk = (todolistId: string, taskId: string) => (dispatch
             }
         })
 }
-export const addTaskThunk = (todolistId: string, title: string) => (dispatch: Dispatch<actionType | setErrorType>) => {
-    dispatch(setStatus('loading'))
+export const addTaskThunk = (todolistId: string, title: string) => (dispatch: Dispatch<actionType | setAppErrorType>) => {
+    dispatch(setAppStatus('loading'))
     todolistAPI.createTask(todolistId, title)
         .then(response => {
             if (response.resultCode === 0) {
                 dispatch(addTask(response.data.item))
-                dispatch(setStatus('succeeded'))
+                dispatch(setAppStatus('succeeded'))
             } else {
-                dispatch(setStatus('failed'))
+                dispatch(setAppStatus('failed'))
                 if (response.messages.length) {
-                    dispatch(setError(response.messages[0]))
+                    dispatch(setAppError(response.messages[0]))
                 } else {
-                    dispatch(setError('Some error occurred'))
+                    dispatch(setAppError('Some error occurred'))
                 }
             }
         })
@@ -109,7 +109,7 @@ type actionType =
     | setTodolistsType
     | addTodolistType
     | removeTodolistType
-    | setStatusType
+    | setAppStatusType
 
 
 export type TasksType = { [key: string]: Array<TaskType> }

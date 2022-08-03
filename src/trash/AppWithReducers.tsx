@@ -183,14 +183,12 @@ export  function AppWithReducers() {
                                 <Paper style={{padding: "20px",}} key={m.id}>
                                     <Todolist
                                         key={m.id}
-                                        title={m.title}
-                                        todolistID={m.id}
+                                        todolistData={m}
                                         tasks={tasksForTodolist}
                                         removeTask={deleteTask}
                                         changeFilter={changeFilterInner}
                                         addTask={addTask}
                                         changeTaskStatus={changeStatus}
-                                        filter={m.filter}
                                         removeTodolist={removeTodolistInner}
                                         changeTaskTitle={changeTaskTitle}
                                         changeTodolistTitle={changeTodolistTitleInner}
