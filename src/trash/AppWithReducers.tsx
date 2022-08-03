@@ -43,6 +43,7 @@ export  function AppWithReducers() {
             filter: 'all',
             addedDate: '',
             order: 0,
+            entityStatus: 'idle',
         },
         {
             id: todolistID2,
@@ -50,6 +51,7 @@ export  function AppWithReducers() {
             filter: 'all',
             addedDate: '',
             order: 0,
+            entityStatus: 'idle',
         },
     ])
 

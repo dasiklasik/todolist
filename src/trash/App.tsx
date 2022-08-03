@@ -24,6 +24,7 @@ function App() {
             filter: 'all',
             addedDate: '',
             order: 0,
+            entityStatus: 'idle',
         },
         {
             id: todolistID2,
@@ -31,6 +32,7 @@ function App() {
             filter: 'all',
             addedDate: '',
             order: 0,
+            entityStatus: 'idle',
         },
     ])
 
@@ -132,7 +134,7 @@ function App() {
 
     const addTodolist = (title: string) => {
         let newID = v1();
-        setTodolists([...todolists, {id: newID, title, filter: 'all', addedDate: '', order: 0}])
+        setTodolists([...todolists, {id: newID, title, filter: 'all', addedDate: '', order: 0, entityStatus: 'idle',}])
         setTasks({...tasks, [newID]: []})
     }
 

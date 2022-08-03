@@ -1,6 +1,7 @@
 import {TaskType, todolistAPI, updateTaskType} from "../../../api/todolistAPI";
 import {Dispatch} from "redux";
 import {addTodolistType, removeTodolistType, setTodolistsType, TODOLIST_TYPES} from "./todolistsReducer";
+import {setError, setErrorType, setStatus, setStatusType} from "../../../app/bll/app-reducer";
 
 
 enum TASKS_TYPES {
@@ -40,7 +41,8 @@ export const tasksReducer = (state = initialState, action: actionType): TasksTyp
             delete copyState[action.id]
             return copyState
         }
-        default: return state
+        default:
+            return state
     }
 }
 
@@ -58,8 +60,12 @@ export const changeTask = (task: TaskType) =>
 
 //thunks
 export const fetchTasks = (todolistId: string) => (dispatch: Dispatch<actionType>) => {
+    dispatch(setStatus('loading'))
     todolistAPI.getTasks(todolistId)
-        .then(response => dispatch(setTasks(response.items, todolistId)))
+        .then(response => {
+            dispatch(setTasks(response.items, todolistId))
+            dispatch(setStatus('succeeded'))
+        })
 }
 export const removeTaskThunk = (todolistId: string, taskId: string) => (dispatch: Dispatch<actionType>) => {
     todolistAPI.deleteTask(todolistId, taskId)
@@ -69,21 +75,30 @@ export const removeTaskThunk = (todolistId: string, taskId: string) => (dispatch
             }
         })
 }
-export const addTaskThunk = (todolistId: string, title: string) => (dispatch: Dispatch<actionType>) => {
+export const addTaskThunk = (todolistId: string, title: string) => (dispatch: Dispatch<actionType | setErrorType>) => {
+    dispatch(setStatus('loading'))
     todolistAPI.createTask(todolistId, title)
         .then(response => {
             if (response.resultCode === 0) {
                 dispatch(addTask(response.data.item))
+                dispatch(setStatus('succeeded'))
+            } else {
+                dispatch(setStatus('failed'))
+                if (response.messages.length) {
+                    dispatch(setError(response.messages[0]))
+                } else {
+                    dispatch(setError('Some error occurred'))
+                }
             }
         })
 }
 export const changeTaskThunk = (todolistId: string, taskId: string, task: updateTaskType) =>
     (dispatch: Dispatch<actionType>) => {
-    todolistAPI.updateTask(todolistId, taskId, task)
-        .then(response => {
-            dispatch(changeTask(response.data.item))
-        })
-}
+        todolistAPI.updateTask(todolistId, taskId, task)
+            .then(response => {
+                dispatch(changeTask(response.data.item))
+            })
+    }
 
 //types
 type actionType =
@@ -94,6 +109,7 @@ type actionType =
     | setTodolistsType
     | addTodolistType
     | removeTodolistType
+    | setStatusType
 
 
 export type TasksType = { [key: string]: Array<TaskType> }

@@ -1,5 +1,6 @@
 import {todolistAPI, TodolistType} from "../../../api/todolistAPI";
 import {Dispatch} from "redux";
+import {requestStatusType, setError, setErrorType, setStatus, setStatusType} from "../../../app/bll/app-reducer";
 
 
 export enum TODOLIST_TYPES {
@@ -19,13 +20,13 @@ export const todolistsReducer = (state = initialState, action: actionType): Arra
         case TODOLIST_TYPES.REMOVE_TODOLIST:
             return state.filter(t => t.id !== action.id)
         case TODOLIST_TYPES.ADD_TODOLIST:
-            return [{...action.todolist, filter: 'all'}, ...state]
+            return [{...action.todolist, filter: 'all', entityStatus: 'idle'}, ...state]
         case TODOLIST_TYPES.CHANGE_TODOLIST_TITLE:
             return state.map(t => t.id === action.id ? {...t, title: action.title} : t)
         case TODOLIST_TYPES.CHANGE_TODOLIST_FILTER:
             return state.map(t => t.id === action.id ? {...t, filter: action.filter} : t)
         case TODOLIST_TYPES.SET_TODOLISTS:
-            return action.todolists.map(tl => ({...tl, filter: 'all'}))
+            return action.todolists.map(tl => ({...tl, filter: 'all', entityStatus: 'idle'}))
         default:
             return state
     }
@@ -46,9 +47,11 @@ export const setTodolists = (todolists: Array<TodolistType>) =>
 
 //thunks
 export const fetchTodolists = () => (dispatch: Dispatch<actionType>) => {
+    dispatch(setStatus('loading'))
     todolistAPI.getTodolist()
         .then(response => {
             dispatch(setTodolists(response))
+            dispatch(setStatus('succeeded'))
         })
 }
 export const removeTodolistThunk = (todolistId: string) => (dispatch: Dispatch<actionType>) => {
@@ -59,10 +62,21 @@ export const removeTodolistThunk = (todolistId: string) => (dispatch: Dispatch<a
             }
         })
 }
-export const addTodolistThunk = (title: string) => (dispatch: Dispatch<actionType>) => {
+export const addTodolistThunk = (title: string) => (dispatch: Dispatch<actionType | setErrorType>) => {
+    dispatch(setStatus('loading'))
     todolistAPI.createTodolist(title)
         .then(response => {
-            dispatch(addTodolist(response.data.item))
+            if (response.resultCode === 0) {
+                dispatch(addTodolist(response.data.item))
+                dispatch(setStatus('succeeded'))
+            } else {
+                if (response.resultCode === 1) {
+                    dispatch(setError(response.messages[0]))
+                } else {
+                    dispatch(setError('Some error occurred'))
+                }
+                dispatch(setStatus('failed'))
+            }
         })
 }
 export const changeTodolistTitleThunk = (todolistId: string, title: string) => (dispatch: Dispatch<actionType>) => {
@@ -78,6 +92,7 @@ export const changeTodolistTitleThunk = (todolistId: string, title: string) => (
 //types
 export type TodolistDomainType = TodolistType & {
     filter: FilterValuesType
+    entityStatus: requestStatusType
 }
 
 export type FilterValuesType = "all" | "active" | "completed";
@@ -92,3 +107,4 @@ type actionType =
     | setTodolistsType
     | addTodolistType
     | removeTodolistType
+    | setStatusType
